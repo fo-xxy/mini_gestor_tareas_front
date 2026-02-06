@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../store/authSlice';
 import { useTasks } from '../hooks/useTasks';
-import { 
-    LogOut, Plus, Search, Trash2, Edit3, 
-    CheckCircle, Clock, Loader2, Filter, X 
+import {
+    LogOut, Plus, Search, Trash2, Edit3,
+    CheckCircle, Clock, Loader2, Filter, X
 } from 'lucide-react';
 
 const Tasks = () => {
@@ -28,7 +28,7 @@ const Tasks = () => {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16 items-center">
                         <div className="flex items-center gap-2">
-                           
+
                             <span className="font-bold text-slate-800 hidden sm:block">Mini gestor de tareas</span>
                         </div>
 
@@ -78,7 +78,7 @@ const Tasks = () => {
                 </div>
 
                 <div className="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto min-h-[250px]">
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-slate-50/50 border-b border-slate-200">
@@ -97,14 +97,23 @@ const Tasks = () => {
                                         {isFilterOpen && (
                                             <>
                                                 <div className="fixed inset-0 z-10" onClick={() => setIsFilterOpen(false)}></div>
-                                                <div className="absolute top-12 left-6 w-40 bg-white border border-slate-200 shadow-xl rounded-xl z-20 py-2">
-                                                    {['all', 'pending', 'in_progress', 'done'].map((option) => (
+
+                                                <div className="absolute top-full left-0 mt-2 w-40 bg-white border border-slate-200 shadow-xl rounded-xl z-50 py-2 animate-in fade-in zoom-in-95 duration-100">
+                                                    {[
+                                                        { val: 'all', label: 'Ver Todos' },
+                                                        { val: 'pending', label: 'Pendiente' },
+                                                        { val: 'in_progress', label: 'En Progreso' },
+                                                        { val: 'done', label: 'Completado' }
+                                                    ].map((option) => (
                                                         <button
-                                                            key={option}
-                                                            onClick={() => { setStatusFilter(option); setIsFilterOpen(false); }}
-                                                            className={`w-full text-left px-4 py-2 text-xs font-bold ${statusFilter === option ? 'text-blue-600 bg-blue-50' : 'text-slate-600 hover:bg-slate-50'}`}
+                                                            key={option.val}
+                                                            onClick={() => { setStatusFilter(option.val); setIsFilterOpen(false); }}
+                                                            className={`w-full text-left px-4 py-2 text-xs font-bold transition-colors ${statusFilter === option.val
+                                                                ? 'text-blue-600 bg-blue-50'
+                                                                : 'text-slate-600 hover:bg-slate-50'
+                                                                }`}
                                                         >
-                                                            {option === 'all' ? 'Ver Todos' : option.replace('_', ' ').toUpperCase()}
+                                                            {option.label}
                                                         </button>
                                                     ))}
                                                 </div>
@@ -216,15 +225,15 @@ const Tasks = () => {
                         <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
                             <Trash2 className="text-red-500" size={30} />
                         </div>
-                        
+
                         <h3 className="text-xl font-bold text-slate-900 mb-2">¿Eliminar tarea?</h3>
                         <p className="text-slate-500 text-sm mb-8 px-2">
                             Estás a punto de borrar <span className="font-bold text-slate-700">"{taskToDelete?.title}"</span>. Esta acción no se puede deshacer.
                         </p>
 
                         <div className="flex gap-3">
-                            <button 
-                                onClick={() => setIsDeleteModalOpen(false)} 
+                            <button
+                                onClick={() => setIsDeleteModalOpen(false)}
                                 className="flex-1 py-3 font-bold text-slate-600 hover:bg-slate-50 rounded-2xl transition-colors"
                             >
                                 Cancelar
